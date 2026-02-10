@@ -1,0 +1,14 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+    fragment@0 {
+        target-path = "/smb@4000000/motherboard";
+        __overlay__ {
+            my_test_node {
+                compatible = "added-via-overlay";
+                status = "okay";
+            };
+        };
+    };
+};
