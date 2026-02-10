@@ -1,0 +1,1 @@
+cmd_/home/ny/QEMU/office_linux/driver/test_dev.ko := arm-linux-gnueabihf-ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /home/ny/QEMU/office_linux/driver/test_dev.ko /home/ny/QEMU/office_linux/driver/test_dev.o /home/ny/QEMU/office_linux/driver/test_dev.mod.o ;  true

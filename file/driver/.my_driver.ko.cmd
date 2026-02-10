@@ -1,0 +1,1 @@
+cmd_/home/ny/QEMU/office_linux/driver/my_driver.ko := arm-linux-gnueabihf-ld -r  -EL -T ./scripts/module-common.lds -T ./arch/arm/kernel/module.lds  --build-id  -o /home/ny/QEMU/office_linux/driver/my_driver.ko /home/ny/QEMU/office_linux/driver/my_driver.o /home/ny/QEMU/office_linux/driver/my_driver.mod.o ;  true

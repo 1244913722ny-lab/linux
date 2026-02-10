@@ -1,0 +1,4 @@
+kernel//home/ny/QEMU/office_linux/driver/hello_driver.ko
+kernel//home/ny/QEMU/office_linux/driver/test_dev.ko
+kernel//home/ny/QEMU/office_linux/driver/my_driver.ko
+kernel//home/ny/QEMU/office_linux/driver/my_interrupt_driver.ko
