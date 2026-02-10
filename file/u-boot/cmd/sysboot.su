@@ -1,0 +1,2 @@
+sysboot.c:50:12:do_sysboot	96	static
+sysboot.c:25:12:sysboot_read_file	48	static

@@ -1,0 +1,13 @@
+eba.c:1034:12:is_error_sane	0	static
+eba.c:91:32:ltree_lookup.isra.0	0	static
+eba.c:200:12:leb_read_lock	24	static
+eba.c:217:13:leb_read_unlock	16	static
+eba.c:55:20:ubi_next_sqnum	0	static
+eba.c:319:5:ubi_eba_unmap_leb	32	static
+eba.c:367:5:ubi_eba_read_leb	48	static
+eba.c:657:5:ubi_eba_write_leb	56	static
+eba.c:790:5:ubi_eba_write_leb_st	56	static
+eba.c:907:5:ubi_eba_atomic_leb_change	48	static
+eba.c:1056:5:ubi_eba_copy_leb	56	static
+eba.c:1293:5:self_check_eba	72	static
+eba.c:1387:5:ubi_eba_init	64	static

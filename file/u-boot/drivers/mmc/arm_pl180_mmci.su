@@ -1,0 +1,7 @@
+arm_pl180_mmci.c:498:5:arm_pl180_mmc_bind	8	static
+arm_pl180_mmci.c:520:12:dm_mmc_getcd	8	static
+arm_pl180_mmci.c:537:12:arm_pl180_mmc_of_to_plat	16	static
+arm_pl180_mmci.c:433:12:arm_pl180_mmc_probe	64	static
+arm_pl180_mmci.c:79:12:do_command	24	static
+arm_pl180_mmci.c:505:12:dm_host_request	32	static
+arm_pl180_mmci.c:513:12:dm_host_set_ios	32	static

@@ -1,0 +1,15 @@
+smc911x.c:455:12:smc911x_of_to_plat	24	static
+smc911x.c:435:12:smc911x_bind	0	static
+smc911x.c:49:12:smc911x_reg_read	0	static
+smc911x.c:58:13:smc911x_reg_write	0	static
+smc911x.c:68:12:smc911x_get_mac_csr	16	static
+smc911x.c:422:12:smc911x_read_rom_hwaddr	24	static
+smc911x.c:440:12:smc911x_probe	16	static
+smc911x.c:80:13:smc911x_set_mac_csr	16	static
+smc911x.c:163:13:smc911x_handle_mac_address	16	static
+smc911x.c:409:12:smc911x_recv	32	static
+smc911x.c:399:12:smc911x_send	32	static
+smc911x.c:117:13:smc911x_reset	16	static
+smc911x.c:392:13:smc911x_stop	8	static
+smc911x.c:213:12:smc911x_eth_phy_write.constprop	16	static
+smc911x.c:382:12:smc911x_start	16	static

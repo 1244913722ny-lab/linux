@@ -1,0 +1,9 @@
+menu.c:170:5:menu_default_choice	0	static
+menu.c:242:5:menu_default_set	24	static
+menu.c:274:5:menu_get_choice	544	static
+menu.c:306:5:menu_item_add	32	static
+menu.c:371:14:menu_create	24	static
+menu.c:415:5:menu_destroy	24	static
+menu.c:430:19:bootmenu_autoboot_loop	32	static
+menu.c:486:19:bootmenu_conv_key	0	static
+menu.c:526:19:bootmenu_loop	8	static

@@ -1,0 +1,7 @@
+vexpress_common.c:54:5:board_init	8	static
+vexpress_common.c:73:5:dram_init	8	static
+vexpress_common.c:80:5:dram_init_banksize	8	static
+vexpress_common.c:119:5:v2m_cfg_write	0	static
+vexpress_common.c:140:6:reset_cpu	8	static
+vexpress_common.c:146:6:lowlevel_init	0	static
+vexpress_common.c:150:7:get_board_rev	0	static

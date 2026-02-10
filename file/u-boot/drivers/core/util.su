@@ -1,0 +1,2 @@
+util.c:14:5:list_count_items	0	static
+util.c:26:5:pci_get_devfn	24	static

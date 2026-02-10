@@ -1,0 +1,15 @@
+build.c:479:13:kill_volumes	16	static
+build.c:178:5:ubi_volume_notify	104	static
+build.c:210:5:ubi_notify_all	112	static
+build.c:254:5:ubi_enumerate_volumes	24	static
+build.c:282:20:ubi_get_device	0	static
+build.c:302:6:ubi_put_device	0	static
+build.c:317:20:ubi_get_by_major	0	static
+build.c:346:5:ubi_major2num	0	static
+build.c:590:6:ubi_free_internal_volumes	16	static
+build.c:875:5:ubi_attach_mtd_dev	224	static
+build.c:1100:5:ubi_detach_mtd_dev	24	static
+build.c:1239:5:ubi_init	40	static
+build.c:1360:6:ubi_exit	16	static
+build.c:1421:5:kstrtoint	8	static
+build.c:1443:5:ubi_mtd_param_parse	120	static

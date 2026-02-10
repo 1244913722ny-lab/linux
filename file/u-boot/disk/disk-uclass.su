@@ -1,0 +1,8 @@
+disk-uclass.c:114:14:part_blk_erase	24	static
+disk-uclass.c:91:14:part_blk_write	32	static
+disk-uclass.c:68:14:part_blk_read	32	static
+disk-uclass.c:152:25:dev_get_blk	8	static
+disk-uclass.c:20:5:part_create_block_devices	192	static
+disk-uclass.c:171:15:disk_blk_read	40	static
+disk-uclass.c:205:15:disk_blk_write	24	static
+disk-uclass.c:224:15:disk_blk_erase	24	static

@@ -1,0 +1,10 @@
+dtbdump.c:39:13:print	0	static
+dtbdump.c:49:13:error	16	static
+dtbdump.c:243:1:open_file_system	64	static
+dtbdump.c:182:7:get_dtb	24	static
+dtbdump.c:203:6:skip_whitespace	0	static
+dtbdump.c:217:6:starts_with	0	static
+dtbdump.c:229:6:do_help	8	static
+dtbdump.c:288:14:do_load	80	static
+dtbdump.c:425:14:do_save	72	static
+dtbdump.c:500:21:efi_main	176	static
