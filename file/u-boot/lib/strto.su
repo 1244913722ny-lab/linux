@@ -1,0 +1,17 @@
+strto.c:18:20:_parse_integer_fixup_radix	0	static
+strto.c:48:13:decode_digit	0	static
+strto.c:58:7:simple_strtoul	32	static
+strto.c:76:7:hextoul	0	static
+strto.c:81:7:dectoul	0	static
+strto.c:86:5:strict_strtoul	32	static
+strto.c:110:6:simple_strtol	8	static
+strto.c:118:15:ustrtoul	8	static
+strto.c:160:20:simple_strtoull	32	static
+strto.c:139:20:ustrtoull	8	static
+strto.c:179:11:simple_strtoll	8	static
+strto.c:187:6:trailing_strtoln_end	16	static
+strto.c:209:6:trailing_strtoln	0	static
+strto.c:214:6:trailing_strtol	0	static
+strto.c:219:6:str_to_upper	4	static
+strto.c:227:14:str_to_list	24	static
+strto.c:260:6:str_free_list	8	static

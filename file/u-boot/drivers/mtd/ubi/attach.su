@@ -1,0 +1,9 @@
+attach.c:1166:13:destroy_ai	24	static
+attach.c:118:12:add_to_list	24	static
+attach.c:191:12:validate_vid_hdr.isra.0	24	static
+attach.c:323:5:ubi_compare_lebs	56	static
+attach.c:448:5:ubi_add_to_av	80	static
+attach.c:604:25:ubi_find_av	0	static
+attach.c:630:6:ubi_remove_av	24	static
+attach.c:708:22:ubi_early_get_peb	48	static
+attach.c:1400:5:ubi_attach	88	static

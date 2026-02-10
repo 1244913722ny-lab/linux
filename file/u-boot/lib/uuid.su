@@ -1,0 +1,5 @@
+uuid.c:66:5:uuid_str_valid	8	static
+uuid.c:274:5:uuid_guid_get_bin	0	static
+uuid.c:294:13:uuid_guid_get_str	0	static
+uuid.c:313:5:uuid_str_to_bin	48	static
+uuid.c:365:6:uuid_bin_to_str	64	static

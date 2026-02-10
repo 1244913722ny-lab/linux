@@ -1,0 +1,3 @@
+.vexpress-v2p-ca9.dtb.pre.o: arch/arm/dts/.vexpress-v2p-ca9.dtb.pre.tmp \
+ include/linux/kconfig.h include/generated/autoconf.h \
+ arch/arm/dts/vexpress-v2m.dtsi

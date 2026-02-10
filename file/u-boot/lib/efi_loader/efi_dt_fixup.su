@@ -1,0 +1,4 @@
+efi_dt_fixup.c:25:13:efi_reserve_memory	24	static
+efi_dt_fixup.c:55:6:efi_try_purge_kaslr_seed	32	static
+efi_dt_fixup.c:85:6:efi_carve_out_dt_rsv	72	static
+efi_dt_fixup.c:142:1:efi_dt_fixup	624	static

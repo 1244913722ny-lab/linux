@@ -1,0 +1,1 @@
+cmd_boot/built-in.o :=  rm -f boot/built-in.o; arm-linux-gnueabihf-ar cDPrsT boot/built-in.o boot/bootm.o boot/bootm_os.o boot/pxe_utils.o boot/image.o boot/image-board.o boot/bootdev-uclass.o boot/bootflow.o boot/bootmeth-uclass.o boot/bootstd-uclass.o boot/bootmeth_extlinux.o boot/bootmeth_pxe.o boot/bootmeth_efi.o boot/image-fdt.o

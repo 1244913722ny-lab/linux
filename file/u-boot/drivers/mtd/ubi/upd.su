@@ -1,0 +1,6 @@
+upd.c:82:12:clear_update_marker	208	static
+upd.c:227:12:write_leb	32	static
+upd.c:122:5:ubi_start_update	208	static
+upd.c:176:5:ubi_start_leb_change	16	static
+upd.c:273:5:ubi_more_update_data	56	static
+upd.c:393:5:ubi_more_leb_change_data	48	static

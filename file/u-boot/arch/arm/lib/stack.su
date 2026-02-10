@@ -1,0 +1,2 @@
+stack.c:20:5:arch_reserve_stacks	0	static
+stack.c:46:6:arch_lmb_reserve	0	static

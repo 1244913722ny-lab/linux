@@ -1,0 +1,13 @@
+time.c:130:25:tick_to_time	28	static
+time.c:30:15:get_tbclk	0	static
+time.c:37:23:timer_read_counter	0	static
+time.c:46:7:timer_get_boot_us	0	static
+time.c:116:25:get_ticks	8	static
+time.c:139:12:timer_init	0	static
+time.c:145:14:get_timer	8	static
+time.c:159:17:get_timer_us	32	static
+time.c:169:30:timer_get_us	8	static
+time.c:164:22:get_timer_us_long	8	static
+time.c:174:10:usec_to_tick	12	static
+time.c:182:13:__udelay	24	static
+time.c:194:6:udelay	16	static

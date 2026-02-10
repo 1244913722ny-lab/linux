@@ -1,0 +1,3 @@
+eth_bootdev.c:59:12:eth_bootdev_bind	8	static
+eth_bootdev.c:68:12:eth_bootdev_hunt	8	static
+eth_bootdev.c:23:12:eth_get_bootflow	88	static

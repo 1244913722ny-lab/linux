@@ -1,0 +1,3 @@
+mii.c:264:13:extract_range	24	static
+mii.c:163:13:dump_field	16	static
+mii.c:281:12:do_mii	120	static

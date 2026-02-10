@@ -1,0 +1,1 @@
+cmd_drivers/net/built-in.o :=  rm -f drivers/net/built-in.o; arm-linux-gnueabihf-ar cDPrsT drivers/net/built-in.o drivers/net/smc911x.o drivers/net/mscc_eswitch/built-in.o drivers/net/phy/built-in.o drivers/net/qe/built-in.o drivers/net/ti/built-in.o
