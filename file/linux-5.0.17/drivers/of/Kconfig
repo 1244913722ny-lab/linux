@@ -102,5 +102,15 @@ config OF_OVERLAY
 
 config OF_NUMA
 	bool
+	
+config OF_CONFIGFS
+	bool "Device Tree Overlay ConfigFS interface"
+	depends on OF_OVERLAY && CONFIGFS_FS
+	help
+	  Enable a simplified ConfigFS interface for managing device tree 
+	  overlays from userspace. This allows you to load and unload 
+	  .dtbo files by creating and removing directories in 
+	  /sys/kernel/config/device-tree/overlays/.
+
 
 endif # OF

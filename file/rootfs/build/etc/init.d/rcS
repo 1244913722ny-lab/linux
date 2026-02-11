@@ -1,0 +1,67 @@
+#!/bin/sh
+# 1. 挂载基础伪文件系统
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+
+# 2. 挂载 ConfigFS (这是你新增的关键行)
+# 先创建目录确保挂载点存在
+mkdir -p /sys/kernel/config
+mount -t configfs configfs /sys/kernel/config
+
+# 3. 设置热插拔管理并扫描设备
+echo /sbin/mdev > /proc/sys/kernel/hotplug 
+/sbin/mdev -s
+
+# 等待设备节点出现，最多等 5 秒
+counter=0
+while [ ! -b /dev/mmcblk0p1 ] && [ $counter -lt 10 ]; do
+    sleep 1
+    counter=$((counter + 1))
+done
+
+if [ -b /dev/mmcblk0p1 ]; then
+# 2. 挂载 SD 卡分区 (存放 dtbo 的地方)
+    mkdir -p /mnt/sdcard
+    mount -t vfat /dev/mmcblk0p1 /mnt/sdcard
+    echo "SD card mounted successfully."
+else
+    echo "SD card device NOT found!"
+fi
+
+
+
+
+# 定义插件存放路径和 ConfigFS 基地址
+DTBO_DIR="/mnt/sdcard"
+CONFIGFS_DTO="/sys/kernel/config/device-tree/overlays"
+
+# 检查目录是否存在且包含 dtbo 文件
+if [ -d "$DTBO_DIR" ]; then
+    echo "--- Scanning for Device Tree Overlays in $DTBO_DIR ---"
+    
+    for dtbo_file in $DTBO_DIR/*.dtbo; do
+        # 排除没有找到文件的情况（避免通配符本身被当做文件名）
+        [ -e "$dtbo_file" ] || continue
+        
+        # 获取不带路径和后缀的文件名作为“槽位”名称
+        # 例如 /mnt/sdcard/led.dtbo -> led
+        slot_name=$(basename "$dtbo_file" .dtbo)
+        
+        echo "Loading Overlay: $slot_name ..."
+        
+        # 创建 ConfigFS 槽位并注入
+        mkdir -p "$CONFIGFS_DTO/$slot_name"
+        if cat "$dtbo_file" > "$CONFIGFS_DTO/$slot_name/dtbo"; then
+            echo "Successfully loaded $slot_name"
+        else
+            echo "FAILED to load $slot_name"
+            # 失败后清理掉空目录
+            rmdir "$CONFIGFS_DTO/$slot_name"
+        fi
+    done
+fi
+
+
+# 4. 打印欢迎信息（可选，方便确认系统已启动）
+echo "System initialized with ConfigFS DTO support."
+
