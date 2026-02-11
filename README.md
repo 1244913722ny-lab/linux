@@ -31,13 +31,13 @@ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 #编译
 CONFIG_OF=y
 CONFIG_OF_OVERLAY=y
 CONFIG_CONFIGFS_FS=y
-# 注意：CONFIG_OF_CONFIGFS 在主线 4.4+ 后已移除，通常由第三方补丁提供
-# 如果你只是在 U-Boot 中加载插件，只需开启 CONFIG_OF_OVERLAY 即可
+## 注意：CONFIG_OF_CONFIGFS 在主线 4.4+ 后已移除，通常由第三方补丁提供
+## 如果你只是在 U-Boot 中加载插件，只需开启 CONFIG_OF_OVERLAY 即可
 
 编译：
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- vexpress_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabi- zImage dtbs -j4
-# 产物：arch/arm/boot/zImage 和 arch/arm/boot/dts/vexpress-v2p-ca9.dtb
+## 产物：arch/arm/boot/zImage 和 arch/arm/boot/dts/vexpress-v2p-ca9.dtb
 
 # 设备树插件 (Overlay) 准备
 创建一个测试插件 my_device.dts：
@@ -87,7 +87,7 @@ mkimage -A arm -O linux -T ramdisk -C gzip -n "BusyBox RootFS" -d rootfs.img roo
 # 制作虚拟 SD 卡镜像
 dd if=/dev/zero of=sdcard.img bs=1M count=64
 mkfs.vfat sdcard.img
-# 将 zImage, main.dtb, my_device.dtbo 放入镜像
+## 将 zImage, main.dtb, my_device.dtbo 放入镜像
 mcopy -i sdcard.img zImage ::/zImage
 mcopy -i sdcard.img vexpress-v2p-ca9.dtb ::/main.dtb
 mcopy -i sdcard.img my_device.dtbo ::/my_device.dtbo
