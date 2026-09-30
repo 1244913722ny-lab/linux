@@ -1,3 +1,3 @@
-/home/ny/QEMU/office_linux/driver/my_interrupt_driver.ko
-/home/ny/QEMU/office_linux/driver/my_interrupt_driver.o
+/mnt/d/linux-study/linux/file/driver/my_interrupt_driver.ko
+/mnt/d/linux-study/linux/file/driver/my_interrupt_driver.o
 

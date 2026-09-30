@@ -7,6 +7,6 @@ qemu-system-arm \
     -m 512M \
     -kernel $UBOOT_PATH \
     -sd $SD_PATH \
-    -nographic 
+    -nographic  
     
 

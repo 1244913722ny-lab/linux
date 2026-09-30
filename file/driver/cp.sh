@@ -1,1 +1,1 @@
-cp ./*.ko  ../rootfs/lib/modules
+cp ./out/ko/*.ko  ../rootfs/lib/modules

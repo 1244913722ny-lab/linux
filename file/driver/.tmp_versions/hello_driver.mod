@@ -1,3 +1,3 @@
-/home/ny/QEMU/office_linux/driver/hello_driver.ko
-/home/ny/QEMU/office_linux/driver/hello_driver.o
+/mnt/d/linux-study/linux/file/driver/hello_driver.ko
+/mnt/d/linux-study/linux/file/driver/hello_driver.o
 

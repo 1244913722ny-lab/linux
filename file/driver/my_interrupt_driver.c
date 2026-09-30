@@ -1,74 +1,155 @@
-#include <linux/module.h>
-#include <linux/platform_device.h>
-#include <linux/interrupt.h> // 必须包含：中断相关 API
-#include <linux/mod_devicetable.h>  // 必须包含：定义了 struct of_device_id
-#include <linux/of.h>               // 建议包含：处理设备树节点的常用函数
+#include <linux/cdev.h>
+#include <linux/fs.h>
+#include <linux/interrupt.h>
 #include <linux/irq.h>
+#include <linux/mod_devicetable.h>
+#include <linux/module.h>
+#include <linux/of.h>
+#include <linux/platform_device.h>
+#include <linux/proc_fs.h>
+#include <linux/uaccess.h>
+
 static int my_irq;
-static DECLARE_WAIT_QUEUE_HEAD(my_wait_queue); // 2. 定义并初始化等待队列头
-static int condition = 0; // 唤醒条件，0 为等待，1 为苏
-// --- 中断处理函数 (Top Half) ---
+static DECLARE_WAIT_QUEUE_HEAD(my_wait_queue);
+static int condition = 0;
+
+static struct proc_dir_entry *irq_proc;
+
 static irqreturn_t my_irq_handler(int irq, void *dev_id) {
-    // 这里就像 STM32 的中断服务函数，动作要快！
-    printk("内核检测到中断！中断号: %d\n", irq);
-    condition = 1;               // 3. 改变条件
-    wake_up_interruptible(&my_wait_queue); // 4. 唤醒在队列里睡觉的进程
-    return IRQ_HANDLED; // 告诉内核：我已经处理过这个中断了
+  printk("内核检测到中断！中断号: %d\n", irq);
+  condition = 1;
+  wake_up_interruptible(&my_wait_queue);
+  return IRQ_HANDLED;
 }
+
+static ssize_t dev_read(struct file *file, char __user *buf, size_t len,
+                        loff_t *offset) {
+  printk("APP：我打算读数据，但还没中断，我要睡了...\n");
+
+  if (wait_event_interruptible(my_wait_queue, condition != 0)) {
+    return -ERESTARTSYS;
+  }
+
+  condition = 0;
+
+  unsigned long ret = copy_to_user(buf, "Interrupt Data", 15);
+  if (ret)
+    return -EFAULT;
+
+  return 15;
+}
+
+static int dev_open(struct inode *inode, struct file *file) {
+  printk("app open dev\n");
+  return 0;
+}
+
+static int dev_release(struct inode *inode, struct file *file) {
+  printk("app close dev\n");
+  return 0;
+}
+
+static const struct file_operations my_fops = {
+    .owner = THIS_MODULE,
+    .open = dev_open,
+    .release = dev_release,
+    .read = dev_read,
+};
+
+#define MYDEV_MAJOR 240
+#define MYDEV_MINOR 0
+static struct cdev my_cdev;
+
+/* 5.0内核proc用file_operations，不要proc_ops */
+static ssize_t proc_trigger_irq_write(struct file *file, const char __user *buf,
+                                      size_t count, loff_t *ppos) {
+  printk("proc: 手动触发中断！\n");
+  my_irq_handler(my_irq, NULL);
+  return count;
+}
+
+static const struct file_operations proc_trigger_fops = {
+    .owner = THIS_MODULE,
+    .write = proc_trigger_irq_write,
+};
 
 static int my_probe(struct platform_device *pdev) {
-    int ret;
-    printk("中断驱动匹配成功！\n");
+  int ret;
+  dev_t devno;
 
-    // 1. 从设备树节点中获取中断号
-    my_irq = platform_get_irq(pdev, 0);
-    if (my_irq < 0) return my_irq;
+  printk("中断驱动匹配成功！\n");
 
-    // 2. 申请中断 (类似 HAL_GPIO_EXTI_Callback)
-    // 参数：中断号, 处理函数, 标志, 名称, 传给处理函数的私有数据
-    ret = request_irq(my_irq, my_irq_handler, IRQF_TRIGGER_RISING, "my_vdev_irq", NULL);
-    if (ret) {
-        printk("无法申请中断 %d\n", my_irq);
-        return ret;
-    }
-    
-    printk("成功申请中断号: %d\n", my_irq);
-    my_irq_handler(my_irq, NULL);
-    return 0;
-}
-// --- 驱动 Read 函数 ---
-static ssize_t dev_read(struct file *file, char __user *buf, size_t len, loff_t *offset) {
-    printk("APP：我打算读数据，但还没中断，我要睡了...\n");
-    
-    // 5. 进入休眠。如果 condition 为 0 就一直睡，直到被 wake_up 且 condition 为 1
-    if (wait_event_interruptible(my_wait_queue, condition != 0)) {
-        return -ERESTARTSYS; // 如果被信号（如 Ctrl+C）中断，返回这个
-    }
+  my_irq = platform_get_irq(pdev, 0);
+  if (my_irq < 0) {
+    printk("get irq fail\n");
+    return my_irq;
+  }
 
-    // 6. 醒来后执行的操作
-    condition = 0; // 重置条件，下次读还要睡
-    printk("APP：喔！我被中断叫醒了，拿到了数据！\n");
-    
-    copy_to_user(buf, "Interrupt Data", 15);
-    return 15;
+  ret = request_irq(my_irq, my_irq_handler, IRQF_TRIGGER_RISING, "myirq_test",
+                    NULL);
+  if (ret) {
+    printk("request_irq fail\n");
+    return ret;
+  }
+
+  devno = MKDEV(MYDEV_MAJOR, MYDEV_MINOR);
+  ret = register_chrdev_region(devno, 1, "myirqdev");
+  if (ret < 0) {
+    printk("register_chrdev_region fail\n");
+    goto err_free_irq;
+  }
+  cdev_init(&my_cdev, &my_fops);
+  my_cdev.owner = THIS_MODULE;
+  ret = cdev_add(&my_cdev, devno, 1);
+  if (ret < 0) {
+    printk("cdev_add fail\n");
+    goto err_unreg_region;
+  }
+
+  /* 创建proc节点，5.0接口 */
+  irq_proc = proc_create("trigger_irq", 0644, NULL, &proc_trigger_fops);
+  if (!irq_proc) {
+    printk("proc create failed\n");
+  }
+
+  return 0;
+
+err_unreg_region:
+  unregister_chrdev_region(devno, 1);
+err_free_irq:
+  free_irq(my_irq, NULL);
+  return ret;
 }
 
 static int my_remove(struct platform_device *pdev) {
-    free_irq(my_irq, NULL); // 退出时必须释放
-    printk("中断驱动已卸载\n");
-    return 0;
+  dev_t devno = MKDEV(MYDEV_MAJOR, MYDEV_MINOR);
+
+  if (irq_proc) {
+    proc_remove(irq_proc);
+    irq_proc = NULL;
+  }
+
+  cdev_del(&my_cdev);
+  unregister_chrdev_region(devno, 1);
+  free_irq(my_irq, NULL);
+  printk("中断驱动已卸载\n");
+  return 0;
 }
 
-static const struct of_device_id my_of_match[] = {
-    {.compatible = "ny,irq-vdev" },
-    { }
-};
+static const struct of_device_id my_of_match[] = {{.compatible = "ny,irq-vdev"},
+                                                  {}};
+MODULE_DEVICE_TABLE(of, my_of_match);
 
 static struct platform_driver my_irq_driver = {
-    .driver = { .name = "my_irq_drv", .of_match_table = my_of_match },
     .probe = my_probe,
     .remove = my_remove,
+    .driver =
+        {
+            .name = "myirq_drv",
+            .of_match_table = my_of_match,
+        },
 };
 
 module_platform_driver(my_irq_driver);
+
 MODULE_LICENSE("GPL");

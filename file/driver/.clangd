@@ -1,0 +1,10 @@
+CompileFlags:
+  Remove:
+    - -std=gnu89
+  Add:
+    - -std=gnu99
+    - -D__KERNEL__
+    - -DMODULE
+    - --target=arm-linux-gnueabihf
+    - -Wno-declaration-after-statement
+    

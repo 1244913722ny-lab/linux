@@ -1,0 +1,24 @@
+# 内核模块编译产物
+*.o
+*.ko
+*.mod
+*.mod.c
+*.symvers
+*.cmd
+*.d
+*.dtb
+*.dtbo
+*.order
+*.built-in
+*.tmp
+*.log
+*.bak
+*.swp
+*.swo
+
+# 编译产生的临时文件
+*.i
+*.s
+*.lst
+*.map
+*.elf

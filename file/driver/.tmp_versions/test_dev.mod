@@ -1,3 +1,3 @@
-/home/ny/QEMU/office_linux/driver/test_dev.ko
-/home/ny/QEMU/office_linux/driver/test_dev.o
+/mnt/d/linux-study/linux/file/driver/test_dev.ko
+/mnt/d/linux-study/linux/file/driver/test_dev.o
 
