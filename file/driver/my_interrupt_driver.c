@@ -132,7 +132,7 @@ static int my_remove(struct platform_device *pdev) {
   cdev_del(&my_cdev);
   unregister_chrdev_region(devno, 1);
   free_irq(my_irq, NULL);
-  printk("中断驱动已卸载\n");
+  printk("中断驱动已卸载!\n");
   return 0;
 }
 
