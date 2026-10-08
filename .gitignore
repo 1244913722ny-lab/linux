@@ -1,3 +1,6 @@
+
+file/uboot-start/full_sd.img binary
+file/uboot-start/flash0.bin binary
 # 内核模块编译产物
 *.o
 *.ko
