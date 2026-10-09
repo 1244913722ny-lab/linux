@@ -11,4 +11,20 @@
             };
         };
     };
+     fragment@1 {
+        target-path = "/";
+        __overlay__ {
+            my_gpio_keys {
+                compatible = "my,gpio-keys";
+                status = "okay";
+
+                key0 {
+                    label = "my_key0";
+                    linux,code = <11>;        /* KEY_0 */
+                    gpios = <0x07 0 0>;       /* &sys_mci(phandle 0x07), line 0, flags 0 */
+                    debounce-interval-ms = <30>;
+                };
+            };
+        };
+    };
 };

@@ -25,23 +25,23 @@
 #include <linux/file.h>
 #include <linux/vmalloc.h>
 #include <linux/firmware.h>
-#include <linux/of_resolver.h>
+// #include <linux/of_resolver.h>
 
 #include "of_private.h"
 
 struct cfs_overlay_item {
-	struct config_item	item;
+	struct config_item item;
 
-	char			path[PATH_MAX];
+	char path[PATH_MAX];
 
-	const struct firmware	*fw;
-	struct device_node	*overlay;
-	int			ov_id;
+	const struct firmware *fw;
+	struct device_node *overlay;
+	int ov_id;
 
-	void			*dtbo;
-	int			dtbo_size;
+	void *dtbo;
+	int dtbo_size;
 
-	void			*mem;
+	void *mem;
 };
 
 static DEFINE_MUTEX(overlay_lock);
@@ -53,16 +53,16 @@ static int create_overlay(struct cfs_overlay_item *overlay, void *blob)
 	/* FIXME */
 	err = of_overlay_fdt_apply(blob, overlay->dtbo_size, &overlay->ov_id);
 	if (err < 0) {
-		pr_err("%s: Failed to create overlay (err=%d)\n",
-		       __func__, err);
+		pr_err("%s: Failed to create overlay (err=%d)\n", __func__,
+		       err);
 		return err;
 	}
 
 	return err;
 }
 
-static inline struct cfs_overlay_item
-		*to_cfs_overlay_item(struct config_item *item)
+static inline struct cfs_overlay_item *
+to_cfs_overlay_item(struct config_item *item)
 {
 	return item ? container_of(item, struct cfs_overlay_item, item) : NULL;
 }
@@ -119,8 +119,9 @@ out_err:
 static ssize_t cfs_overlay_item_status_show(struct config_item *item,
 					    char *page)
 {
-	return sprintf(page, "%s\n", to_cfs_overlay_item(item)->ov_id >= 0 ?
-					"applied" : "unapplied");
+	return sprintf(page, "%s\n",
+		       to_cfs_overlay_item(item)->ov_id >= 0 ? "applied" :
+							       "unapplied");
 }
 
 CONFIGFS_ATTR(cfs_overlay_item_, path);
@@ -132,8 +133,8 @@ static struct configfs_attribute *cfs_overlay_attrs[] = {
 	NULL,
 };
 
-static ssize_t cfs_overlay_item_dtbo_read(struct config_item *item,
-				   void *buf, size_t max_count)
+static ssize_t cfs_overlay_item_dtbo_read(struct config_item *item, void *buf,
+					  size_t max_count)
 {
 	struct cfs_overlay_item *overlay = to_cfs_overlay_item(item);
 
@@ -155,7 +156,7 @@ static ssize_t cfs_overlay_item_dtbo_read(struct config_item *item,
 }
 
 static ssize_t cfs_overlay_item_dtbo_write(struct config_item *item,
-				    const void *buf, size_t count)
+					   const void *buf, size_t count)
 {
 	struct cfs_overlay_item *overlay = to_cfs_overlay_item(item);
 	int err;
@@ -207,19 +208,18 @@ static void cfs_overlay_release(struct config_item *item)
 }
 
 static struct configfs_item_operations cfs_overlay_item_ops = {
-	.release		= cfs_overlay_release,
+	.release = cfs_overlay_release,
 };
 
 static struct config_item_type cfs_overlay_type = {
-	.ct_item_ops	= &cfs_overlay_item_ops,
-	.ct_attrs	= cfs_overlay_attrs,
-	.ct_bin_attrs	= cfs_overlay_bin_attrs,
-	.ct_owner	= THIS_MODULE,
+	.ct_item_ops = &cfs_overlay_item_ops,
+	.ct_attrs = cfs_overlay_attrs,
+	.ct_bin_attrs = cfs_overlay_bin_attrs,
+	.ct_owner = THIS_MODULE,
 };
 
-static struct config_item
-	*cfs_overlay_group_make_item(struct config_group *group,
-				     const char *name)
+static struct config_item *
+cfs_overlay_group_make_item(struct config_group *group, const char *name)
 {
 	struct cfs_overlay_item *overlay;
 
@@ -241,13 +241,13 @@ static void cfs_overlay_group_drop_item(struct config_group *group,
 }
 
 static struct configfs_group_operations overlays_ops = {
-	.make_item	= cfs_overlay_group_make_item,
-	.drop_item	= cfs_overlay_group_drop_item,
+	.make_item = cfs_overlay_group_make_item,
+	.drop_item = cfs_overlay_group_drop_item,
 };
 
 static struct config_item_type overlays_type = {
-	.ct_group_ops   = &overlays_ops,
-	.ct_owner       = THIS_MODULE,
+	.ct_group_ops = &overlays_ops,
+	.ct_owner = THIS_MODULE,
 };
 
 static struct configfs_group_operations of_cfs_ops = {
@@ -255,8 +255,8 @@ static struct configfs_group_operations of_cfs_ops = {
 };
 
 static struct config_item_type of_cfs_type = {
-	.ct_group_ops   = &of_cfs_ops,
-	.ct_owner       = THIS_MODULE,
+	.ct_group_ops = &of_cfs_ops,
+	.ct_owner = THIS_MODULE,
 };
 
 struct config_group of_cfs_overlay_group;

@@ -325,8 +325,14 @@ File systems --->
 ### 2.2 编译
 
 ```bash
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- headers_install INSTALL_HDR_PATH=./uapi_arm_out  //生成uapi_arm_out目录，包含内核头文件
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- vexpress_defconfig
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- zImage dtbs -j$(nproc) HOSTCFLAGS="-fcommon"
+
+###ubuntu24.04
+
+make ARCH=arm HOSTCFLAGS="-fcommon" CROSS_COMPILE=/mnt/d/linux-study/linux/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf- zImage dtbs -j20
 ```
 
 > **为什么需要 `HOSTCFLAGS="-fcommon"`？**

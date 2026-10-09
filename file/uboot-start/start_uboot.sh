@@ -7,6 +7,13 @@ qemu-system-arm \
     -m 512M \
     -kernel $UBOOT_PATH \
     -sd $SD_PATH \
-    -nographic  
+    -display gtk \
+    -serial stdio
+    # -nographic  
+
+    # 使用-display sdl会导致窗口不会刷新
+
+ 
+
     
 

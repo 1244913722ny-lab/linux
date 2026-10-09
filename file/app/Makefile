@@ -3,10 +3,11 @@ CC = arm-linux-gnueabihf-gcc
 
 # 2. 编译选项
 CFLAGS = -static -Wall -lpthread
+CFLAGS += -I../linux-5.0.17/uapi_arm_out/include
 LIBS = -lpthread  # 库链接放这里
 # 3. 目录定义
 BUILD_DIR = ./build
-SRC = app1.c
+SRC = testsdl.c
 
 # 4. 目标文件路径 (build/app)
 TARGET = $(BUILD_DIR)/app
@@ -20,7 +21,7 @@ $(BUILD_DIR):
 
 # 编译并链接到 build 目录
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) $(LIBS) 
 
 # 清理目标：删除整个 build 目录
 clean:
