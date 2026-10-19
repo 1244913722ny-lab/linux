@@ -1,0 +1,23 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/arm-linux-gnueabihf-gcc",
+      "-Wall",
+      "-O2",
+      "-std=gnu99",
+      "-I../lvgl",
+      "-I../lvgl/demos",
+      "-I.",
+      "-I../lvgl/src/extra/libs/freetype",
+      "-I../../freetype/freetype_armhf/usr/include/freetype2",
+      "-DLV_CONF_INCLUDE_SIMPLE",
+      "-c",
+      "-o",
+      "build/out/network_demo.c.o",
+      "network_demo.c"
+    ],
+    "directory": "/mnt/d/linux-study/linux/file/app",
+    "file": "/mnt/d/linux-study/linux/file/app/network_demo.c",
+    "output": "/mnt/d/linux-study/linux/file/app/build/out/network_demo.c.o"
+  }
+]

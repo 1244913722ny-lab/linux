@@ -19,6 +19,7 @@ sudo cp ./vexpress-v2p-ca9.dtb mnt_p1/main.dtb
 sudo cp my_overlay.dtbo mnt_p1/
 sudo cp rootfs.uimg mnt_p1/
 sudo cp app mnt_p1/
+sudo cp lvgl_demo mnt_p1/
 sudo umount mnt_p1
 
 

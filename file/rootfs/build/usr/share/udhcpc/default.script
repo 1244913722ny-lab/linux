@@ -1,0 +1,59 @@
+#!/bin/sh
+# ===========================================================================
+#  udhcpc 默认脚本（busybox 标准版）
+#  作用：udhcpc 从 DHCP 服务器拿到租约后，会调用本脚本把“租约参数”真正写到
+#        系统上 —— 配置网卡 IP / 子网掩码 / 广播地址、设置默认路由、写 DNS
+#        解析配置(/etc/resolv.conf)、设置主机名。没有它，udhcpc 只“拿到”地址
+#        却不会配置接口，板子照样上不了网。
+#
+#  调用约定（busybox udhcpc）：
+#    第一个参数 $1 是事件名：deconfig / bound / renew / nak ...
+#    其余参数通过环境变量传入，busybox 用 $interface 表示网卡名（不是 $IFACE）：
+#    $ip $subnet $broadcast $router $dns $hostname $domain ...
+# ===========================================================================
+
+RESOLV_CONF="/etc/resolv.conf"
+
+[ -n "$1" ] && echo "udhcpc: $1 on $interface (ip=$ip)"
+
+case "$1" in
+    # 租约释放/重置：把接口 IP 清掉
+    deconfig)
+        /sbin/ifconfig "$interface" 0.0.0.0
+        ;;
+
+    # 首次拿到租约(bound) 或续租(renew)：正式配置接口
+    bound|renew)
+        # 1) 配置 IP / 子网掩码 / 广播
+        /sbin/ifconfig "$interface" "$ip" \
+            ${subnet:+netmask "$subnet"} \
+            ${broadcast:+broadcast "$broadcast"}
+
+        # 2) 默认路由（先清掉该接口上的旧默认路由，避免重复添加）
+        if [ -n "$router" ]; then
+            while /sbin/route del default gw 0.0.0.0 dev "$interface" 2>/dev/null; do
+                :
+            done
+            for r in $router; do
+                /sbin/route add default gw "$r" dev "$interface"
+            done
+        fi
+
+        # 3) 写 DNS（覆盖式写入，多条 nameserver 逐行追加）
+        if [ -n "$dns" ]; then
+            : > "$RESOLV_CONF"
+            for ns in $dns; do
+                echo "nameserver $ns" >> "$RESOLV_CONF"
+            done
+        fi
+
+        # 4) 设置主机名（若服务器下发了）
+        if [ -n "$hostname" ]; then
+            hostname "$hostname"
+        fi
+        ;;
+
+    *)
+        # nak / leasefail 等：忽略
+        ;;
+esac

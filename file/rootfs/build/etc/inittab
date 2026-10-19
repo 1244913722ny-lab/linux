@@ -1,0 +1,17 @@
+# /etc/inittab —— vexpress-a9 串口控制台专用
+#
+# 重要背景：
+#   内核启动参数 console=ttyAMA0（见 uboot-start/boot.cmd），板子控制台是
+#   串口 ttyAMA0，没有帧缓冲虚拟终端（tty1~ttyN 不存在）。
+#
+#   若本文件缺失，busybox 的 init 会套用其“内置默认 inittab”，其中会对
+#   tty2/tty3/tty4/tty5 执行 askfirst 登录 shell。由于这些 /dev/ttyN 节点
+#   根本不存在，init 会反复报 “can't open /dev/ttyN: No such file or
+#   directory”，且因为 askfirst/respawn 在进程退出后会重启，导致无限刷屏。
+#
+#   本文件显式定义了 inittab，只保留真正的串口控制台，杜绝上述刷屏。
+
+::sysinit:/etc/init.d/rcS
+console::askfirst:-/bin/sh
+::restart:/sbin/init
+::ctrlaltdel:/sbin/reboot

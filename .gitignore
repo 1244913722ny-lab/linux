@@ -1,6 +1,8 @@
 
-file/uboot-start/full_sd.img binary
-file/uboot-start/flash0.bin binary
+file/uboot-start/full_sd.img 
+file/uboot-start/flash0.bin 
+file/cam_server/node_modules/
+
 # 内核模块编译产物
 *.o
 *.ko

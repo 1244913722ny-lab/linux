@@ -1,4 +1,10 @@
 #!/bin/sh
+# 0. 防御性创建标准挂载点：防止源 rootfs 缺失这些目录，
+#    导致后面的 mount 直接失败（进而 /sys 没挂 -> mdev 扫不到设备 ->
+#    /dev/mmcblk0p1 节点不存在 -> SD 卡挂不上）。即使打包源漏了目录，
+#    这里也会先建好，再挂载。
+mkdir -p /proc /sys /dev /tmp /mnt/sdcard
+
 # 1. 挂载基础伪文件系统
 mount -t proc proc /proc
 mount -t sysfs sysfs /sys
@@ -64,4 +70,24 @@ fi
 
 # 4. 打印欢迎信息（可选，方便确认系统已启动）
 echo "System initialized with ConfigFS DTO support."
+
+
+# 5. 网络初始化：等待 LAN9118 网卡(eth0)出现，用 udhcpc 通过 DHCP 自动获取
+#    IP / 默认路由 / DNS。QEMU 用户态网络(user-mode)会内置一个 DHCP 服务器，
+#    板子通常拿到 10.0.2.15、网关 10.0.2.2、DNS 10.0.2.3。
+#    -n：无 DHCP 服务器时立刻失败（不阻塞启动）；-q：拿到租约后退出。
+#    -s：显式指定上面那份把租约落实成配置的脚本。
+echo "Bringing up network (eth0)..."
+counter=0
+while [ ! -e /sys/class/net/eth0 ] && [ $counter -lt 10 ]; do
+    sleep 1
+    counter=$((counter + 1))
+done
+
+if [ -e /sys/class/net/eth0 ]; then
+    /sbin/udhcpc -i eth0 -n -q -s /usr/share/udhcpc/default.script
+    echo "Network up: $(/sbin/ifconfig eth0 2>/dev/null | grep 'inet addr' | awk '{print $2}')"
+else
+    echo "Network: eth0 NOT found (check QEMU -device lan9118)."
+fi
 
